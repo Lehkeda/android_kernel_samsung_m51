@@ -76,3 +76,5 @@ GTAGS
 *~
 \#*#
 *.rej
+out/*
+arch/arm64/boot/Image
