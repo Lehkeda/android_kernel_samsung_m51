@@ -1384,7 +1384,6 @@ static struct binder_node *binder_init_node_ilocked(
 		FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT;
 	node->min_priority = to_kernel_prio(node->sched_policy, priority);
 	node->accept_fds = !!(flags & FLAT_BINDER_FLAG_ACCEPTS_FDS);
-	node->txn_security_ctx = !!(flags & FLAT_BINDER_FLAG_TXN_SECURITY_CTX);
 	node->inherit_rt = !!(flags & FLAT_BINDER_FLAG_INHERIT_RT);
 	spin_lock_init(&node->lock);
 	INIT_LIST_HEAD(&node->work.entry);
@@ -3432,8 +3431,7 @@ static void binder_transaction(struct binder_proc *proc,
 	buffer_offset = off_start_offset;
 	off_end_offset = off_start_offset + tr->offsets_size;
 	sg_buf_offset = ALIGN(off_end_offset, sizeof(void *));
-	sg_buf_end_offset = sg_buf_offset + extra_buffers_size -
-		ALIGN(secctx_sz, sizeof(u64));
+	sg_buf_end_offset = sg_buf_offset + extra_buffers_size;
 	off_min = 0;
 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
 	     buffer_offset += sizeof(binder_size_t)) {
